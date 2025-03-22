@@ -1,0 +1,52 @@
+﻿@model IEnumerable<PhongKhamThuCung.Models.EF.DichVu>
+
+<h2>Dịch Vụ</h2>
+
+
+
+@if (Model == null || Model.Count() <= 0)
+{
+    <h2>Chưa Có Dịch Vụ</h2>
+}
+else
+{
+    <div class="container-md doctor my-3 mx-auto" >
+        <div class="owl-carousel h-100" id="carouselLeft_DichVu" style=" width: 100%; height: auto;">
+            <div class="team-item my-3">
+                <div class="wow slideInUp my-3 h-100" data-wow-delay="0.1s">
+                    <div class="section-title bg-light rounded h-100 p-5">
+                        <h5 class="position-relative d-inline-block text-primary text-uppercase">Our Dentist</h5>
+                        <h1 class="display-6 mb-4">Meet Our Certified & Experienced Dentist</h1>
+                        <a href="/DatLich" class="btn btn-primary py-3 px-5">Appointment</a>
+                    </div>
+                </div>
+            </div>
+
+            @foreach (PhongKhamThuCung.Models.EF.DichVu i in Model)
+            {
+                <a href="/DichVu/Detail/@i.MaDichVu" class="text-decoration-none">
+                    <!-- Thêm liên kết đến trang chi tiết -->
+                    <div class="team-item my-3 h-100 d-flex flex-column ">
+                        <div class="position-relative rounded-top wow slideInUp" data-wow-delay="0.1s" style="z-index: 1;">
+                            <div class="team-item-img">
+                                <img class="img-fluid rounded-top w-100 HinhDichVu" src="@i.HinhAnh" alt="@i.HinhAnh">
+                            </div>
+                        </div>
+                        <div style="width: 100%; height: auto;" class="team-text position-relative bg-light text-center rounded-bottom p-4 pt-2 flex-grow-1 d-flex flex-column justify-content-between">
+                            <h4 class="mb-2">@i.TenDichVu</h4>
+                            <p class="text-primary mb-0" style="width:100%; height:auto;">@i.MoTaNgan</p>
+                            <p class="text-primary mb-0 mt-auto">@i.GiaDichVu?.ToString("N0") VND</p>
+                        </div>
+                        
+                    </div>
+                </a>
+            }
+        </div>
+
+        <!-- Nút điều khiển -->
+        <div class="text-center m-3">
+            <button id="prevSlide_DichVu" class="btn btn-primary">Trước</button>
+            <button id="nextSlide_DichVu" class="btn btn-primary">Tiếp</button>
+        </div>
+    </div>
+    }

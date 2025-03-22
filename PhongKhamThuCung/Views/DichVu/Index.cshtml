@@ -1,0 +1,65 @@
+﻿@model IEnumerable<PhongKhamThuCung.Models.EF.DichVu>
+
+
+<!-- Hero Start -->
+<div class="container-fluid bg-primary py-5 hero-header mb-5">
+    <div class="row py-3">
+        <div class="col-12 text-center">
+            <h1 class="display-3 text-white animated zoomIn">Services</h1>
+            <a href="/Home" class="h4 text-white">Trang Chủ</a>
+            <i class="far fa-circle text-white px-2"></i>
+            <a href="/DichVu" class="h4 text-white">Dịch Vụ</a>
+        </div>
+    </div>
+</div>
+<!-- Hero End -->
+
+@if(Model != null || Model.Count() >=0)
+{
+    <div class="container-md">
+        <form asp-action="Index" asp-controller="DichVu">
+            <div class="input-group mb-3">
+                <input name="TimKiem" type="text" value="@ViewBag.TimKiem" class="form-control" placeholder="Nhập Tên Dịch Vụ Cần Tìm Kiếm">
+                <button class="btn btn-primary">Tìm Kiếm</button>
+            </div>
+
+        </form>
+    </div>
+    
+    <!-- Dịch Vụ Section -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var dichVu in Model)
+                    {
+                        <div class="col">
+                            <div class="card border-0 h-100 shadow border-0 overflow-hidden" style="border-radius:15px;">
+                                <div class="position-relative">
+                                    <img src="@dichVu.HinhAnh" class="card-img-top " alt="@dichVu.TenDichVu" style="height: 200px; object-fit: cover;">
+                                    <div class="position-absolute top-0 end-0 bg-primary text-white p-2 " style="border-bottom-left-radius:9px;">
+                                        <i class="fas fa-paw"></i>
+                                    </div>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title fw-bold">@dichVu.TenDichVu</h5>
+                                    <p class="card-text text-muted">@dichVu.MoTaNgan</p>
+                                    <p class="text-primary fw-bold">Giá: @dichVu.GiaDichVu?.ToString("N0") VNĐ</p>
+                                    @* <a href="/DichVu/Detail?id=@dichVu.MaDichVu" class="btn btn-primary btn-sm">Xem Chi Tiết</a> *@
+                                    <a asp-action="Detail" asp-controller="DichVu" asp-route-id="@dichVu.MaDichVu" class="btn btn-primary btn-sm">Xem Chi Tiết</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12 text-center">
+                        <p class="text-muted">Không có dịch vụ nào được tìm thấy.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

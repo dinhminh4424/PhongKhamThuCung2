@@ -1,0 +1,93 @@
+﻿@model PhongKhamThuCung.Models.EF.LichHen
+
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    ViewData["Title"] = "Thêm Lịch Hẹn";
+
+}
+@section naviHeader {
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="/Admin" class="nav-link ">Trang Chủ</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin/DatLich" class="nav-link active">Đặt Lịch</a>
+            </li>
+        </ul>
+}
+
+
+<form asp-area="Admin" asp-controller="DatLich" asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="card container-fluid ">
+        <div class="card-header d-flex ">
+            <h2 class="card-title">Chi Tiết @ViewData["Title"]</h2>
+        </div>
+        <div class="card-body">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="HoTen">Tên </label>
+                        <input asp-for="HoTen" type="text" class="form-control" placeholder="Nhập Tên ">
+                        <span asp-validation-for="HoTen"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="GhiChu">Ghi Chú</label>
+                        <textarea asp-for="GhiChu" type="text" class="form-control" placeholder="Nhập Ghi Chú"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="MaDichVu">Dịch Vụ</label>
+                        <select class="form-control" asp-for="MaDichVu" asp-items="ViewBag.DanhSachDichVu"></select>
+                        <span asp-validation-for="MaDichVu"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="MaDichVu">Thú Cưng</label>
+                        <select class="form-control" asp-for="MaThuCung" asp-items="ViewBag.DanhSachThuCung"></select>
+                        <span asp-validation-for="MaThuCung"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Email</label>
+                        <input name="Email" type="text" class="form-control" placeholder="Nhập Email Tài Khoản">
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="SoDienThoai">Số Điện Thoại</label>
+                        <input asp-for="SoDienThoai" type="text" class="form-control" placeholder="Nhập Số Điện Thoại">
+                        <span asp-validation-for="SoDienThoai"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="NgayHen">Ngày Hẹn</label>
+                        <input asp-for="NgayHen" type="datetime-local" class="form-control" placeholder="Nhập Ngày Hẹn">
+                        <span asp-validation-for="NgayHen"></span>
+                    </div>
+                </div>
+            </div>
+            <div class=" mb-3">
+                <input asp-for="TrangThai" type="checkbox">
+                <span>Nhận Lịch Hẹn</span>
+            </div>
+            <div class=" mb-3">
+                <a class="btn btn-primary" href="/Admin/DatLich">Thoát</a>
+                <button class="btn btn-success">Thêm</button>
+            </div>
+        </div>
+        <div class="card-footer">
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+        <script>
+
+        </script>
+}

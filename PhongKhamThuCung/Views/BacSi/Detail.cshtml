@@ -1,0 +1,70 @@
+﻿@model PhongKhamThuCung.Models.EF.BacSi
+
+<!-- Hero Start -->
+<div class="container-fluid bg-primary py-5 hero-header mb-5">
+    <div class="row py-3">
+        <div class="col-12 text-center">
+            <h1 class="display-3 text-white animated zoomIn">Services</h1>
+            <a href="/Home" class="h4 text-white">Trang Chủ</a>
+            <i class="far fa-circle text-white px-2"></i>
+            <a href="/DichVu" class="h4 text-white">Dịch Vụ</a>
+            <i class="far fa-circle text-white px-2"></i>
+            <a href="/BacSi/Detail/@Model.MaBacSi" class="h4 text-white">@Model.TenBacSi</a>
+        </div>
+    </div>
+</div>
+<!-- Hero End -->
+<!-- Chi Tiết Bác Sĩ Section -->
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Hình Ảnh Bác Sĩ -->
+            <div class="col-lg-5">
+                <div class="card border-0 shadow " style="border-radius: 15px; overflow: hidden;">
+                    <img src="@Model.HinhAnh" class="card-img-top" alt="@Model.TenBacSi" style="height: 400px; object-fit: cover;">
+                </div>
+            </div>
+            <!-- Thông Tin Bác Sĩ -->
+            <div class="col-lg-7 ">
+                <div class="card border-0 shadow h-100" style="border-radius: 15px;">
+                    <div class="card-body p-4">
+                        <h2 class="card-title fw-bold mb-4">@Model.TenBacSi</h2>
+                        <p class="card-text text-muted mb-4">@Model.MoTa</p>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-3">
+                                <span class="fw-bold">Email:</span>
+                                <span class="text-muted">@Model.Email</span>
+                            </li>
+                            <li class="mb-3">
+                                <span class="fw-bold">SĐT:</span>
+                                <span class="text-muted">@Model.SDT</span>
+                            </li>
+                            <li class="mb-3">
+                                <span class="fw-bold">Địa Chỉ:</span>
+                                <span class="text-muted">@Model.DiaChi</span>
+                            </li>
+                            <li class="mb-3">
+                                <span class="fw-bold">Facebook:</span>
+                                <a href="@Model.Facebook" target="_blank" class="text-primary">@Model.Facebook</a>
+                            </li>
+                            <li class="mb-3">
+                                <span class="fw-bold">Chuyên Khoa:</span>
+                                <span class="text-muted">@Model.ChuyenKhoa?.TenChuyenKhoa</span>
+                            </li>
+                            <li class="mb-3">
+                                <span class="fw-bold">Trạng Thái:</span>
+                                <span class="badge bg-@(Model.Active ? "success" : "danger")" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                                    @(Model.Active ? "Đang hoạt động" : "Ngừng hoạt động")
+                                </span>
+                            </li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <a href="/BacSi" class="btn btn-outline-primary" >Quay Lại</a>
+                            <a href="/DatLich" class="btn btn-primary" >Đặt Lịch Ngay</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

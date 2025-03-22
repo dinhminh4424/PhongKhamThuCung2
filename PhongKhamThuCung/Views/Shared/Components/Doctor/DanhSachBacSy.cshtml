@@ -1,0 +1,58 @@
+﻿@model IEnumerable<PhongKhamThuCung.Models.EF.BacSi>
+
+<h2>Bác Sĩ</h2>
+
+@if (Model == null || Model.Count() <=0)
+{
+    <h2>Ko có Bác Sĩ</h2>
+}
+else
+{
+    <div class="container-md doctor m-3 mx-auto" style="width:100%; height:auto;">
+        <div class="owl-carousel h-100" id="carouselLeft123">
+            <div class="team-item my-3" >
+                <div class="wow slideInUp my-3 h-100" data-wow-delay="0.1s" style="width:100%; height:auto;">
+                    <div class="section-title bg-light rounded h-100 p-5">
+                        <h5 class="position-relative d-inline-block text-primary text-uppercase">Bác sĩ của chúng tôi</h5>
+                        <h1 class="display-6 mb-4">Gặp gỡ bác sĩ có chứng chỉ và kinh nghiệm của chúng tôi</h1>
+                        <a href="/DatLich" class="btn btn-primary py-3 px-5">Appointment</a>
+                    </div>
+                </div>
+            </div>
+
+            @foreach (PhongKhamThuCung.Models.EF.BacSi i in Model)
+            {
+                
+                    <div class="team-item my-3" >
+                        <a href="/BacSi/Detail?id=@i.MaBacSi"> 
+                            <div class="position-relative rounded-top wow slideInUp " data-wow-delay="0.1s" style="z-index: 1;">
+                                <div class="team-item-img " style="height:79%;">
+                                    <img class="img-fluid rounded-top w-100 HinhBacSy" src="@i.HinhAnh" alt="">
+                                </div>
+                                <div class="position-absolute top-100 start-50 translate-middle bg-light rounded p-2 d-flex">
+                                    <a class="btn btn-primary btn-square m-1" href="@i.Facebook" target="_blank"><i class="fab fa-twitter fw-normal"></i></a>
+                                    <a class="btn btn-primary btn-square m-1" href="@i.Facebook" target="_blank"><i class="fab fa-facebook-f fw-normal"></i></a>
+                                    <a class="btn btn-primary btn-square m-1" href="@i.Facebook" target="_blank"><i class="fab fa-linkedin-in fw-normal"></i></a>
+                                    <a class="btn btn-primary btn-square m-1" href="@i.Facebook" target="_blank"><i class="fab fa-instagram fw-normal"></i></a>
+                                </div>
+                            </div>
+                            <div class="team-text position-relative bg-light text-center rounded-bottom p-4 pt-5">
+                                <h4 class="mb-2">Dr. @i.TenBacSi</h4>
+                                <p class="text-primary mb-0">@i.ChuyenKhoa?.TenChuyenKhoa</p>
+                            </div>
+                        </a>
+                    </div>
+                
+            }
+        </div>
+
+
+        <!-- Nút điều khiển -->
+        <div class="text-center m-3">
+            <button id="prevSlide" class="btn btn-primary">Trước</button>
+            <button id="nextSlide" class="btn btn-primary">Tiếp</button>
+        </div>
+    </div>
+}
+
+

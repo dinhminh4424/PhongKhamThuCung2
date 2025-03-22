@@ -1,0 +1,62 @@
+﻿@model PhongKhamThuCung.Models.EF.ChuyenKhoa
+@{
+    ViewData["Title"] = "Cập Nhật Chuyên Khoa";
+
+}
+@section naviHeader {
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin" class="nav-link ">Trang Chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin/ChuyenKhoa" class="nav-link active">Chuyên Khoa</a>
+        </li>
+    </ul>
+
+}
+
+
+
+<form asp-area="Admin" asp-controller="ChuyenKhoa" asp-action="Update" method="post">
+    <input type="hidden" asp-for="MaChuyenKhoa" />
+    <div class="card container-fluid ">
+        <div class="card-header d-flex ">
+            <h2 class="card-title">Chi Tiết @ViewData["Title"]</h2>
+        </div>
+        <div class="card-body">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class=" mb-3">
+                <label asp-for="TenChuyenKhoa">Tên Chuyên Khoa</label>
+                <input asp-for="TenChuyenKhoa" type="text" class="form-control" placeholder="Nhập Tên Chuyên Khoa">
+                <span asp-validation-for="TenChuyenKhoa"></span>
+            </div>
+            <div class=" mb-3">
+                <label asp-for="MoTaNgan">Mô tả</label>
+                <input asp-for="MoTaNgan" type="text" class="form-control" placeholder="Nhập Mô Tả Chuyên Khoa">
+                <span asp-validation-for="MoTaNgan"></span>
+            </div>
+            <div class=" mb-3">
+                <label asp-for="NoiDung">Tên Chuyên Khoa</label>
+                <textarea asp-for="NoiDung" type="text" class="form-control" placeholder="Nhập nội Dung Chuyên Khoa"></textarea>
+                <span asp-validation-for="NoiDung"></span>
+            </div>
+            <div class=" mb-3">
+
+                <input asp-for="Active" type="checkbox">
+                <span>Hoạt động</span>
+
+            </div>
+            <div class=" mb-3">
+                <a class="btn btn-primary" href="/Admin/ChuyenKhoa">Thoát</a>
+                <button class="btn btn-success">Cập Nhật</button>
+            </div>
+        </div>
+        <div class="card-footer">
+        </div>
+    </div>
+</form>

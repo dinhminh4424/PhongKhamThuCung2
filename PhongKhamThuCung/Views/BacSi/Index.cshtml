@@ -1,0 +1,114 @@
+﻿@model IEnumerable<PhongKhamThuCung.Models.EF.BacSi>
+
+
+<!-- Hero Start -->
+<div class="container-fluid bg-primary py-5 hero-header mb-5">
+    <div class="row py-3">
+        <div class="col-12 text-center">
+            <h1 class="display-3 text-white animated zoomIn">Services</h1>
+            <a href="/Home" class="h4 text-white">Trang Chủ</a>
+            <i class="far fa-circle text-white px-2"></i>
+            <a href="/BacSi" class="h4 text-white">Bác Sĩ</a>
+        </div>
+    </div>
+</div>
+<!-- Hero End -->
+<!-- Danh Sách Bác Sĩ Section -->
+<div class="container-md">
+    <form asp-action="Index" asp-controller="BacSi" >
+        <div class="input-group mb-4">
+            <input name="TimKiem" value="@ViewBag.TimKiem" type="text" placeholder="Nhập Tên Bác Sĩ, Chuyên Khoa, Email hoặc Số Điện Thoại" class="form-control">
+            <button class="btn btn-primary">Tìm Kiếm</button>
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                @if (ViewBag.DanhSachChuyenKhoa != null)
+                {
+                    foreach (PhongKhamThuCung.Models.EF.ChuyenKhoa i in ViewBag.DanhSachChuyenKhoa)
+                    {
+                        <li>
+                            <a class="dropdown-item" href="/BacSi/Index?IdChuyenKhoa=@i.MaChuyenKhoa">
+                                @i.TenChuyenKhoa
+                            </a>
+                        </li>
+                    }
+                    
+                }
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/BacSi">Toàn Bộ Các Khoa</a></li>
+            </ul>
+        </div>
+    </form>
+</div>
+<div class="container-fluid py-5">
+    <div class="container">
+        
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @if (Model != null && Model.Any())
+            {
+                foreach (PhongKhamThuCung.Models.EF.BacSi bacSi in Model)
+                {
+                    <div class="col">
+                        <div class="thebacsi card h-100 shadow border-0 overflow-hidden" style="background-color:rgb(238, 249, 255); border-radius:15px;">
+                            <div class="position-relative">
+                                <img src="@bacSi.HinhAnh" class="card-img-top HinhBacSy" alt="@bacSi.TenBacSi" style="height: 250px; object-fit: cover;">
+                                <div class="position-absolute top-0 end-0 bg-primary text-white p-2" style="border-bottom-left-radius:10px;">
+                                    <i class="fas fa-user-md "></i>
+                                </div>
+                            </div>
+                            <div class="card-body text-center">
+                                <h5 class="card-title fw-bold mb-3 "> Dr. @bacSi.TenBacSi</h5>
+                                <p class="card-text text-muted mb-4 ">@bacSi.MoTa</p>
+                                <ul class="list-unstyled mb-4">
+                                    <li class="mb-2">
+                                        <span class="fw-bold">Chuyên Khoa:</span>
+                                        <span class="text-muted">@bacSi.ChuyenKhoa?.TenChuyenKhoa</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <span class="fw-bold">Email:</span>
+                                        <span class="text-muted">@bacSi.Email</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <span class="fw-bold">SĐT:</span>
+                                        <span class="text-muted">@bacSi.SDT</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <span class="fw-bold">Địa Chỉ:</span>
+                                        <span class="text-muted">@bacSi.DiaChi</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <span class="fw-bold">Facebook:</span>
+                                        <a href="@bacSi.Facebook" target="_blank" class="text-primary">@bacSi.Facebook</a>
+                                    </li>
+                                </ul>
+                                <a href="/BacSi/Detail/@bacSi.MaBacSi" class="btn btn-primary ">Xem Chi Tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center">
+                    <p class="text-muted">Không có bác sĩ nào được tìm thấy.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <!-- Bootstrap Bundle (bao gồm Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
+            var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+                return new bootstrap.Dropdown(dropdownToggleEl)
+            })
+        });
+    </script>
+}

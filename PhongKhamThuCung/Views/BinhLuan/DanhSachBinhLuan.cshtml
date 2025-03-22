@@ -1,0 +1,65 @@
+﻿@model IEnumerable<PhongKhamThuCung.Models.EF.DanhGia>
+
+@{
+    ViewData["Title"] = "Danh sách bình luận";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h2 class="card-title text-center mb-0">Danh sách bình luận</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Nội dung</th>
+                            <th>Ngày</th>
+                            <th>Cảm Xúc</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var danhGia in Model)
+                        {
+                            <tr>
+                                <td>@danhGia.NoiDung</td>
+                                <td>@danhGia.NgayBinhLuan.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    @if (danhGia.CamXuc == "Dịch Vụ Tốt")
+                                    {
+                                        <span class="badge bg-success"><i class="fas fa-smile"></i> @danhGia.CamXuc</span>
+                                    }
+                                    else if (danhGia.CamXuc == "Dịch Vụ Cực Tốt")
+                                    {
+                                        <span class="badge bg-primary"><i class="fas fa-grin-stars"></i> @danhGia.CamXuc</span>
+                                    }
+                                    else if (danhGia.CamXuc == "Dịch Vụ Thất Vọng")
+                                    {
+                                        <span class="badge bg-danger"><i class="fas fa-frown"></i> @danhGia.CamXuc</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">@danhGia.CamXuc</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a href="/BinhLuan/ChinhSuaBinhLuan?id=@danhGia.MaDanhGia" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i> Chỉnh sửa
+                                    </a>
+                                    <a href="@Url.Action("Delete", "BinhLuan", new { id = danhGia.MaDanhGia })" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa bình luận này?');">
+                                        <i class="fas fa-trash"></i> Xóa
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Thêm Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />

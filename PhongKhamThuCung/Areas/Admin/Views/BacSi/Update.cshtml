@@ -1,0 +1,118 @@
+﻿@model PhongKhamThuCung.Models.EF.BacSi
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    ViewData["Title"] = "Cập Nhật Thông Tin Bác Sĩ";
+
+}
+@section naviHeader {
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin" class="nav-link ">Trang Chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin/BacSi" class="nav-link active">Bác Sĩ</a>
+        </li>
+    </ul>
+}
+
+
+<form asp-area="Admin" asp-controller="BacSi" asp-action="Update" method="post" enctype="multipart/form-data">
+    <div class="card container-fluid ">
+        <div class="card-header d-flex ">
+            <h2 class="card-title">Chi Tiết @ViewData["Title"]</h2>
+        </div>
+        <div class="card-body">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input hidden asp-for="MaBacSi"/>
+            <div class="container-fluid mb-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="TenBacSi">Tên Bác Sĩ</label>
+                        <input asp-for="TenBacSi" type="text" class="form-control" placeholder="Nhập Tên Bác Sĩ">
+                        <span asp-validation-for="TenBacSi"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Facebook">FaceBook</label>
+                        <input asp-for="Facebook" type="text" class="form-control" placeholder="Nhập FaceBook Bác Sĩ">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="MaChuyenKhoa">Chuyên Khoa</label>
+                        <select class="form-control" asp-for="MaChuyenKhoa" asp-items="ViewBag.DanhSachChuyenKhoa"></select>
+                        <span asp-validation-for="MaChuyenKhoa"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Email">Email</label>
+                        <input asp-for="Email" type="text" class="form-control" placeholder="Nhập Email Bác Sĩ">
+                        <span asp-validation-for="Email"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="DiaChi">Địa Chỉ</label>
+                        <input asp-for="DiaChi" type="text" class="form-control" placeholder="Nhập Địa Chỉ Bác Sĩ">
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="SDT">Số Điện Thoại</label>
+                        <input asp-for="SDT" type="text" class="form-control" placeholder="Nhập SDT Bác Sĩ">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label asp-for="MoTa">Mô Tả</label>
+                        <textarea asp-for="MoTa" type="text" class="form-control" placeholder="Nhập Mô Tả Bác Sĩ"></textarea>
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label  asp-for="HinhAnh">Hình Ảnh Hiện Tại</label>
+                        <input disabled asp-for="HinhAnh"  type="text" class="form-control">
+                        <div class="my-1">
+                            <img src="@Model.HinhAnh" style="width:199px" />
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-6">
+                        <label >Hình Ảnh</label>
+                        <input name="HinhAnhFile" id="AnhVuaTai" type="file" class="form-control" placeholder="Chọn Ảnh Mới">
+                        <div class="HienThiAnhBSMoi"></div>
+                    </div>
+                </div>
+            </div>
+            <div class=" mb-3">
+                <input asp-for="Active" type="checkbox">
+                <span>Hoạt động</span>
+
+            </div>
+            <div class=" mb-3">
+                <a class="btn btn-primary" href="/Admin/BacSi">Thoát</a>
+                <button class="btn btn-success">Cập Nhật</button>
+            </div>
+            
+        </div>
+        <div class="card-footer">
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $("#AnhVuaTai").change(function(e){//input #AnhVuaTai
+            let a = e.target.files[0]; // lấy thằng file đầu tiên
+            if(a != null)
+            {
+                  
+                let path = URL.createObjectURL(a) // lấy ra địa chỉ
+                let s = `<img src="${path}" style="width:199px"/>`;
+                $(".HienThiAnhBSMoi").empty();
+                $(".HienThiAnhBSMoi").append(s);
+            }
+        });
+    </script>
+}

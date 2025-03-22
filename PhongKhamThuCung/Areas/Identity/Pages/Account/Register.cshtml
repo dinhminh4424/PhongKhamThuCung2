@@ -1,0 +1,180 @@
+﻿@*
+
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h2>Create a new account.</h2>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.HoVaTen"></label>
+                <input asp-for="Input.HoVaTen" class="form-control" autocomplete="HoVaTen" aria-required="true" />
+                <span asp-validation-for="Input.HoVaTen" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.DiaChi"></label>
+                <input asp-for="Input.DiaChi" class="form-control" autocomplete="DiaChi" aria-required="true" />
+                <span asp-validation-for="Input.DiaChi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ConfirmPassword"></label>
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-control">
+                    <option disabled selected> --- Hãy Chon Role ---</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            <h3>Use another service to register.</h3>
+            <hr />
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    <div>
+                        <p>
+                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
+                            about setting up this ASP.NET application to support logging in via external services</a>.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins)
+                                {
+                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+*@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <h1 class="display-4 text-center mb-5 fw-bold text-dark">@ViewData["Title"]</h1>
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-4">
+                    <div class="row">
+                        <!-- Registration Form -->
+                        <div class="col-md-6">
+                            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                                <h2 class="text-center mb-4 text-muted">Create a New Account</h2>
+                                <hr class="mb-4" />
+                                <div asp-validation-summary="All" class="alert alert-warning" role="alert"></div>
+
+                                <!-- Full Name Field -->
+                                <div class="form-group mb-4">
+                                    <label asp-for="Input.HoVaTen" class="form-label fw-bold text-dark">Full Name</label>
+                                    <input asp-for="Input.HoVaTen" class="form-control form-control-lg" autocomplete="name" aria-required="true" />
+                                    <span asp-validation-for="Input.HoVaTen" class="text-muted small"></span>
+                                </div>
+                                <!-- Phone Field -->
+                                <div class="form-group mb-4">
+                                    <label asp-for="Input.PhoneNumber" class="form-label fw-bold text-dark">PhoneNumber</label>
+                                    <input asp-for="Input.PhoneNumber" class="form-control form-control-lg" autocomplete="street-PhoneNumber" aria-required="true" />
+                                    <span asp-validation-for="Input.PhoneNumber" class="text-muted small"></span>
+                                </div>
+                                <!-- Address Field -->
+                                <div class="form-group mb-4">
+                                    <label asp-for="Input.DiaChi" class="form-label fw-bold text-dark">Address</label>
+                                    <input asp-for="Input.DiaChi" class="form-control form-control-lg" autocomplete="street-address" aria-required="true" />
+                                    <span asp-validation-for="Input.DiaChi" class="text-muted small"></span>
+                                </div>
+
+                                <!-- Email Field -->
+                                <div class="form-group mb-4">
+                                    <label asp-for="Input.Email" class="form-label fw-bold text-dark">Email</label>
+                                    <input asp-for="Input.Email" class="form-control form-control-lg" autocomplete="username" aria-required="true" />
+                                    <span asp-validation-for="Input.Email" class="text-muted small"></span>
+                                </div>
+
+                                <!-- Password Field -->
+                                <div class="form-group mb-4">
+                                    <label asp-for="Input.Password" class="form-label fw-bold text-dark">Password</label>
+                                    <input asp-for="Input.Password" class="form-control form-control-lg" autocomplete="new-password" aria-required="true" />
+                                    <span asp-validation-for="Input.Password" class="text-muted small"></span>
+                                </div>
+
+                                <!-- Confirm Password Field -->
+                                <div class="form-group mb-4">
+                                    <label asp-for="Input.ConfirmPassword" class="form-label fw-bold text-dark">Confirm Password</label>
+                                    <input asp-for="Input.ConfirmPassword" class="form-control form-control-lg" autocomplete="new-password" aria-required="true" />
+                                    <span asp-validation-for="Input.ConfirmPassword" class="text-muted small"></span>
+                                </div>
+
+                                <!-- Role Selection Field -->
+                                <div class="form-group mb-4">
+                                    <label asp-for="Input.Role" class="form-label fw-bold text-dark">Role</label>
+                                    <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select form-select-lg">
+                                        <option disabled selected>--- Select Role ---</option>
+                                    </select>
+                                </div>
+
+                                <!-- Register Button -->
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg w-100 py-2">Register</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Additional Content (Image or Introduction) -->
+                        <div class="col-md-6 d-flex align-items-center justify-content-center">
+                            <div class="text-center p-4">
+                                <img src="https://via.placeholder.com/400" alt="Registration Illustration" class="img-fluid mb-4" />
+                                <h3 class="text-dark fw-bold">Welcome to Our Platform</h3>
+                                <p class="text-muted">Join our community and enjoy exclusive benefits. Register now to get started!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,245 @@
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@model X.PagedList.IPagedList<PhongKhamThuCung.Models.EF.ChuyenKhoa>
+@* @model IEnumerable<PhongKhamThuCung.Models.EF.ChuyenKhoa> *@
+@{
+    ViewData["Title"] = "Chuyên Khoa";
+
+}
+
+@section naviHeader {
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="/Admin" class="nav-link ">Trang Chủ</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin/ChuyenKhoa" class="nav-link active">Chuyên Khoa</a>
+            </li>
+        </ul>
+}
+
+<div>
+    <form asp-action="index" asp-controller="ChuyenKhoa" asp-area="Admin">
+        <div class="input-group mb-3">
+            <input name="TimKiem" value="@ViewBag.TimKiem" type="text" class="form-control" placeholder="Nhập tên chuyên khoa cần tìm">
+            <button class="btn btn-primary">Tìm Kiếm</button>
+        </div>
+    </form>
+</div>
+
+<div class="card container-fluid "> 
+    <div class="card-header d-flex ">
+        <div>
+            <h2 class="card-title">Danh Sách @ViewData["Title"]</h2>
+        </div>
+
+        <div class="ms-auto">
+            <a href="/Admin/ChuyenKhoa/Create" class="btn btn-primary">Thêm</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover ">
+            <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Tên @ViewData["Title"]</th>
+                    <th scope="col">Mô Tả </th>
+                    <th scope="col">Active</th>
+                    <th scope="col">Chức Năng</th>
+                </tr>
+            </thead>
+
+            @if (Model == null || Model.Count() <= 0)
+            {
+                    <tr>
+                        <td colspan="6">Chưa có @ViewData["Title"]</td>
+                    </tr>
+            }
+            else
+            {
+                int d = 1;
+                foreach (PhongKhamThuCung.Models.EF.ChuyenKhoa i in Model)
+                {
+                    <tr id="Dong_ID_@i.MaChuyenKhoa">
+                        <th scope="col" data-bs-toggle="modal" data-bs-target="#XemChiTietChuyenKhoa_@i.MaChuyenKhoa">@d</th>
+                        <td data-bs-toggle="modal" data-bs-target="#XemChiTietChuyenKhoa_@i.MaChuyenKhoa">@i.TenChuyenKhoa</td>
+                        <td data-bs-toggle="modal" data-bs-target="#XemChiTietChuyenKhoa_@i.MaChuyenKhoa">@i.MoTaNgan</td>
+                        @if (@i.Active == true)
+                        {
+                            <td class="trangthaiActive" id="active_id_@i.MaChuyenKhoa">
+                                <i class="fa-regular fa-circle-check text-success hoatdong" id="logo_@i.MaChuyenKhoa" data-check="v" data-id="@i.MaChuyenKhoa"></i>
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="trangthaiActive" id="active_id_@i.MaChuyenKhoa">
+                                <i class="fa-regular fa-circle-xmark text-danger hoatdong" id="logo_@i.MaChuyenKhoa" data-check="x" data-id="@i.MaChuyenKhoa"></i>
+                            </td>
+                        }
+                        <td>
+                            <a  asp-area="Admin" 
+                                asp-controller="ChuyenKhoa" 
+                                asp-action="Update" 
+                                asp-route-id="@i.MaChuyenKhoa" 
+                                class="btn btn-success">Cập Nhật</a>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#CheckXoaChuyenKhoa_@i.MaChuyenKhoa">
+                                Xóa
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="CheckXoaChuyenKhoa_@i.MaChuyenKhoa" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Thông Báo</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-4">ID</div>
+                                                <div class="col-8">@i.MaChuyenKhoa</div>
+                                            </div>
+                                            <div class="row">
+                                            <div class="col-4">Tên @ViewData["Title"] </div>
+                                                <div class="col-8">@i.TenChuyenKhoa</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4">Mô Tả </div>
+                                                <div class="col-8">@i.MoTaNgan</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4">Nội Dung</div>
+                                                <div class="col-8">@i.NoiDung</div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                                            <button type="button" onclick="XoaChuyenKhoa(@i.MaChuyenKhoa);" class="btn btn-danger " data-bs-dismiss="modal">Xóa</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    d++;
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="XemChiTietChuyenKhoa_@i.MaChuyenKhoa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Thông Tin @ViewData["Title"]</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-4">ID</div>
+                                        <div class="col-8">@i.MaChuyenKhoa</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4">Tên @ViewData["Title"] </div>
+                                        <div class="col-8">@i.TenChuyenKhoa</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4">Mô Tả </div>
+                                        <div class="col-8">@i.MoTaNgan</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4">Nội Dung</div>
+                                        <div class="col-8">@i.NoiDung</div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </table>
+    </div>
+    <!-- Hiển thị phân trang -->
+    <div class=" d-flex justify-content-center  text-center">
+        @Html.PagedListPager(Model, Page => Url.Action("Index",
+                 new { Page, ViewBag.TimKiem }),
+                 new PagedListRenderOptions
+        {
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" }
+        })
+    </div>
+    <div class="card-footer">
+
+    </div>
+</div>
+
+@section Scripts {
+        <script>
+        function XoaChuyenKhoa(id)
+            {
+                $.ajax({
+                    type :"POST",
+                    url: "/Admin/ChuyenKhoa/Delete",
+                    data:{id : id},
+                    success : function(rs)
+                    {
+                        if(rs.success){
+                            $("#Dong_ID_"+id).remove();
+                            alert("Đã xóa thành công");
+                        }
+                        else
+                        {
+                            alert("Lỗi: "+ rs.message);
+                        }
+                    },
+                    erorr : () =>
+                    {
+                        alert("Lỗi Hệ Thống");
+                    }
+                })
+            }
+
+            $(document).on("dblclick", ".hoatdong", function () {
+                let id = $(this).attr("data-id");
+                $.ajax({
+                    type :"POST",
+                    url: "/Admin/ChuyenKhoa/HoatDong",
+                    data:{id : id},
+                    success : function(rs)
+                    {
+                        if(rs.success){
+                           let trangthai = $("#logo_"+id).attr("data-check");
+                           let s = ``;
+                           if(trangthai === 'x')
+                           {
+                                s = `<i class="fa-regular fa-circle-check text-success hoatdong" id="logo_`+id+`" data-check="v" data-id="`+id+`"></i>`;
+                                $("#logo_"+id).remove();
+                           }
+                           else
+                           {
+                                s = `<i class="fa-regular fa-circle-xmark text-danger hoatdong" id="logo_`+id+`" data-check="x" data-id="`+id+`"></i>`;
+                                $("#logo_"+id).remove();
+                           }
+                           $("#active_id_"+id).append(s);
+                        }
+
+                        else
+                        {
+                            alert("Lỗi: "+ rs.message);
+                        }
+                    },
+                    error : () =>
+                    {
+                        alert("Lỗi Hệ Thống");
+                    }
+                })
+            });
+
+        </script>
+}   

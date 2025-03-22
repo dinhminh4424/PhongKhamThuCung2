@@ -1,0 +1,85 @@
+﻿@model IEnumerable<PhongKhamThuCung.Models.EF.UuDai>
+
+@*
+<!-- Offer Start -->
+<div class="container-fluid bg-offer my-5 py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 wow zoomIn" data-wow-delay="0.6s">
+                <div class="offer-text text-center rounded p-5">
+                    <h1 class="display-5 text-white">Save 30% On Your First Dental Checkup</h1>
+                    <p class="text-white mb-4">Eirmod sed tempor lorem ut dolores sit kasd ipsum. Dolor ea et dolore et at sea ea at dolor justo ipsum duo rebum sea. Eos vero eos vero ea et dolore eirmod diam duo lorem magna sit dolore sed et.</p>
+                    <a href="appointment.html" class="btn btn-dark py-3 px-5 me-3">Appointment</a>
+                    <a href="" class="btn btn-light py-3 px-5">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Offer End -->
+
+*@
+
+
+@if (Model == null || Model.Count() <= 0)
+{
+    <h2>Ko có Ưu Đãi</h2>
+}
+else
+{
+
+
+<div class="container-fluid p-0">
+    <div id="header-carousel-uudai" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            @if (Model != null)
+            {
+                int d = 0;
+                foreach (PhongKhamThuCung.Models.EF.UuDai i in Model)
+                {
+                    if (d == 0)
+                    {
+                        <div class="carousel-item active">
+                            <img class="w-100" style="max-height:80vh" src="@i.HinhAnh" alt="Image">
+                            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                                <div class="p-3" style="max-width: 900px;">
+                                    <h5 class="text-white text-uppercase mb-3 animated slideInDown">@i.TenUuDai</h5>
+                                    <h3 class="text-white text-uppercase mb-3 animated slideInDown">@i.MoTa</h3>
+                                    <a href="appointment.html" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Đặt Lịch</a>
+                                    <a href="/Home/ContactUs" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Liên Hệ</a>
+                                </div>
+                            </div>
+                        </div>
+                        d++;
+                    }
+                    else
+                    {
+                        <div class="carousel-item">
+                            <img class="w-100" src="@i.HinhAnh" style="max-height:80vh" alt="Image">
+                            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                                    <div class="p-3" style="max-width: 900px;">
+                                        <h5 class="text-white text-uppercase mb-3 animated slideInDown">@i.TenUuDai</h5>
+                                        <h3 class="text-white text-uppercase mb-3 animated slideInDown">@i.MoTa</h3>
+                                        <a href="appointment.html" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Đặt Lịch</a>
+                                        <a href="/Home/ContactUs" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Liên Hệ</a>
+                                    </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel-uudai"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#header-carousel-uudai"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+ }

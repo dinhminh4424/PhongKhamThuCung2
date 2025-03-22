@@ -1,0 +1,77 @@
+﻿@model PhongKhamThuCung.Models.EF.LichHen
+
+@{
+    ViewData["Title"] = "Chi Tiết Lịch Hẹn";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>@ViewData["Title"]</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Hiển thị thông tin chi tiết lịch hẹn -->
+                    <dl class="row">
+                        <!-- Mã Lịch Hẹn -->
+                        <dt class="col-sm-4">Mã Lịch Hẹn:</dt>
+                        <dd class="col-sm-8">@Model.MaLichHen</dd>
+
+                        <!-- Ngày Hẹn -->
+                        <dt class="col-sm-4">Ngày Hẹn:</dt>
+                        <dd class="col-sm-8">@Model.NgayHen?.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        <!-- Trạng Thái -->
+                        <dt class="col-sm-4">Trạng Thái:</dt>
+                        <dd class="col-sm-8">@Model.TrangThai</dd>
+
+                        <!--Đã Khám -->
+                        <dt class="col-sm-4">Đã Khám:</dt>
+                        @if (Model.Active == true)
+                        {
+                            <dd class="col-sm-8">
+                                <i class="fa-regular fa-circle-check text-success hoatdong" data-check="v" ></i>
+                            </dd>
+                        }
+                        else
+                        {
+                            <dd class="col-sm-8">
+                                <i class="fa-regular fa-circle-xmark text-danger hoatdong"  data-check="x"></i>
+                            </dd>
+                        }
+
+                        <!-- Mã Thú Cưng -->
+                        <dt class="col-sm-4">Mã Thú Cưng:</dt>
+                        <dd class="col-sm-8">@Model.ThuCung?.TenThuCung</dd>
+
+                        <!-- Mã Dịch Vụ -->
+                        <dt class="col-sm-4">Mã Dịch Vụ:</dt>
+                        <dd class="col-sm-8">@Model.DichVu?.TenDichVu</dd>
+
+                        <!-- User ID -->
+                        <dt class="col-sm-4">Email Tin Nhắn:</dt>
+                        <dd class="col-sm-8">@Model.ApplicationUser?.UserName</dd>
+
+                        <!-- Ghi Chú -->
+                        <dt class="col-sm-4">Ghi Chú:</dt>
+                        <dd class="col-sm-8">@Model.GhiChu</dd>
+
+                        <!-- Họ Tên -->
+                        <dt class="col-sm-4">Họ Tên:</dt>
+                        <dd class="col-sm-8">@Model.HoTen</dd>
+
+                        <!-- Số Điện Thoại -->
+                        <dt class="col-sm-4">Số Điện Thoại:</dt>
+                        <dd class="col-sm-8">@Model.SoDienThoai</dd>
+                    </dl>
+
+                    <!-- Nút quay lại -->
+                    <div class="text-center">
+                        <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Quay Lại</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,97 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+
+@model PhongKhamThuCung.Models.EF.TinTuc
+@{
+    ViewData["Title"] = "Cập Nhật Tin Tức";
+
+}
+@section naviHeader {
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin" class="nav-link ">Trang Chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin/TinTuc" class="nav-link Active"> Tin Tức</a>
+        </li>
+    </ul>
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+<form asp-area="Admin" asp-controller="TinTuc" asp-action="Update" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="MaTinTuc" />
+    <div class="card container-fluid ">
+        <div class="card-header d-flex ">
+            <h2 class="card-title">Chi Tiết @ViewData["Title"]</h2>
+        </div>
+        <div class="card-body">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class=" mb-3">
+                <label asp-for="TieuDe">Tên Tin Tức </label>
+                <input asp-for="TieuDe" type="text" class="form-control" placeholder="Nhập Tên Tin Tức">
+                <span asp-validation-for="TieuDe"></span>
+            </div>
+            <div class=" mb-3">
+                <label asp-for="MoTaNgan">Mô Tả Ngắn</label>
+                <input asp-for="MoTaNgan" type="text" class="form-control" placeholder="Nhập Mô Tả Ngắn Tin Tức">
+            </div>
+            <div class="form-group">
+                <label asp-for="TieuDe">Nhập Nội Dung </label>
+                <textarea asp-for="NoiDung" id="compose-textarea" class="form-control">
+
+                </textarea>
+                <span asp-validation-for="NoiDung"></span>
+            </div>
+            <div class="mb-3">
+                <label>Ảnh Hiện Tại</label>
+                @if (!string.IsNullOrEmpty(Model.HinhAnh))
+                {
+                    <img src="@Model.HinhAnh" width="100" />
+                }
+            </div>
+            <div class="mb-3">
+                <label>Chọn Ảnh Mới</label>
+                <input type="file" name="HinhAnhFile" class="form-control" />
+            </div>
+            <div class=" mb-3">
+                <label asp-for="MaLoaiTin">Chọn Thể Loại </label>
+                <select asp-for="MaLoaiTin" asp-items="@ViewBag.DanhSachLoaiTinTuc" class="form-control"></select>
+                <span asp-validation-for="MaLoaiTin"></span>
+            </div>
+
+            <div class=" mb-3">
+                <input asp-for="Active" type="checkbox">
+                <span>Hoạt động</span>
+
+            </div>
+            <div class=" mb-3">
+                <a class="btn btn-primary" href="/Admin/TinTuc">Thoát</a>
+                <button class="btn btn-success">Cập Nhật</button>
+            </div>
+        </div>
+        <div class="card-footer">
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+
+    <!-- Summernote -->
+    <script src="~/clients/plugins/summernote/summernote-bs4.min.js"></script>
+    <script>
+        $(function () {
+          //Add text editor
+          $('#compose-textarea').summernote()
+        })
+    </script>
+    <script>
+       
+    </script>
+
+}

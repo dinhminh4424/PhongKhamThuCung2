@@ -1,0 +1,119 @@
+﻿@model List<PhongKhamThuCung.Models.EF.LichHen>
+
+@{
+    ViewData["Title"] = "Danh Sách Lịch Hẹn";
+}
+
+<style>
+    .custom-primary {
+        background-color: #007bff !important; /* Màu xanh primary */
+        color: white !important;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1 !important; /* Màu xám nhẹ khi hover */
+    }
+
+    .badge-confirmed {
+        background-color: #28a745 !important; /* Màu xanh xác nhận */
+        color: white;
+    }
+
+    .badge-pending {
+        background-color: #dc3545 !important; /* Màu đỏ chưa xác nhận */
+        color: white;
+    }
+
+    .badge-failed {
+        background-color: #ffc107 !important; /* Màu vàng thất bại */
+        color: black;
+    }
+
+    .clickable-row {
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center text-primary mb-4">@ViewData["Title"]</h2>
+
+            <!-- Bảng hiển thị danh sách lịch hẹn -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="custom-primary">
+                        <tr>
+                            <th>Mã Lịch Hẹn</th>
+                            <th>Ngày Hẹn</th>
+                            <th>Trạng Thái</th>
+                            <th>Đã Khám</th>
+                            <th>Thú Cưng</th>
+                            <th>Dịch Vụ</th>
+                            <th>Ghi Chú</th>
+                            <th>Họ Tên</th>
+                            <th>Số Điện Thoại</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var lichHen in Model)
+                        {
+                            <tr class="clickable-row"
+                                data-href="@Url.Action("ChiTietLichHen", "DatLich", new { id = lichHen.MaLichHen })">
+                                <td>@lichHen.MaLichHen</td>
+                                <td>@lichHen.NgayHen?.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    @if (lichHen.TrangThai == "Đã Lập Lịch Hẹn Thành Công")
+                                    {
+                                        <span class="badge badge-confirmed">@lichHen.TrangThai</span>
+                                    }
+                                    else if (lichHen.TrangThai == "Xét Lịch Hẹn Thất Bại")
+                                    {
+                                        <span class="badge badge-failed">@lichHen.TrangThai</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-pending">@lichHen.TrangThai</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (lichHen.Active==true)
+                                    {
+                                        <i class="fa-regular fa-circle-check text-success " data-check="v"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-regular fa-circle-xmark text-danger " data-check="x"></i>
+                                    }
+                                </td>
+                                <td>@lichHen.ThuCung?.TenThuCung</td>
+                                <td>@lichHen.DichVu?.TenDichVu</td>
+                                <td>@lichHen.GhiChu</td>
+                                <td>@lichHen.HoTen</td>
+                                <td>@lichHen.SoDienThoai</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Nút quay lại -->
+            <div class="text-center mt-4">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">Quay Lại Trang Chủ</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".clickable-row").forEach(row => {
+                row.addEventListener("click", function () {
+                    window.location = this.getAttribute("data-href");
+                });
+            });
+        });
+    </script>
+}
