@@ -1,51 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using PhongKhamThuCung.Data;
-using PhongKhamThuCung.Models.EF;
+using PhongKhamThuCung.Repositories;
+using System.Threading.Tasks;
 
 namespace PhongKhamThuCung.Controllers
 {
     public class DichVuController : Controller
     {
-        private ApplicationDbContext db;
-        public DichVuController (ApplicationDbContext db)
+        private readonly IDichVuRepository _dichVuRepository;
+
+        public DichVuController(IDichVuRepository dichVuRepository)
         {
-            this.db = db;
+            _dichVuRepository = dichVuRepository;
         }
-        public async Task<IActionResult> Index(string TimKiem="")
+
+        public async Task<IActionResult> Index(string TimKiem = "")
         {
             ViewBag.TimKiem = TimKiem;
-            IEnumerable<DichVu> ds = await db.DichVus.ToListAsync();
-            if (TimKiem.IsNullOrEmpty())
-            {
-                return View(ds);
-            }
-            else
-            {
-                TimKiem = PhongKhamThuCung.BoTro.Filter.ChuyenCoDauThanhKhongDau(TimKiem);
-                List<DichVu> dsDV = new List<DichVu>();
-                foreach(DichVu i in ds)
-                {
-                    string r1 = PhongKhamThuCung.BoTro.Filter.ChuyenCoDauThanhKhongDau(i.TenDichVu);
-                    if(r1.ToUpper().Contains(TimKiem.ToUpper()))
-                    {
-                        dsDV.Add(i);
-                        continue;
-                    }
-                }
-                return View(dsDV);
-            }
+            var ds = await _dichVuRepository.GetAllAsync(TimKiem);
+            return View(ds);
         }
 
         public async Task<IActionResult> Detail(int id)
         {
-            DichVu x = await db.DichVus.FirstOrDefaultAsync(i => i.MaDichVu == id);
-            if(x==null)
+            var dichVu = await _dichVuRepository.GetByIdAsync(id);
+            if (dichVu == null)
             {
-                return RedirectToAction("Index","Home");
+                return NotFound();
             }
-            return View(x);
+            return View(dichVu);
         }
     }
 }

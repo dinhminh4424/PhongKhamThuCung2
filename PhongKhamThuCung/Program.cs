@@ -12,6 +12,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("QuanLyThuCung")));
 
 builder.Services.AddScoped<IBacSiRepository, BacSiRepository>();
+builder.Services.AddScoped<IBaiVietRepository, BaiVietRepository>();
+builder.Services.AddScoped<ILichHenRepository, LichHenRepository>();
+builder.Services.AddScoped<IDichVuRepository, DichVuRepository>();
+
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
  .AddDefaultTokenProviders()

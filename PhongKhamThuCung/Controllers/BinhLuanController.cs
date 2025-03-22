@@ -1,20 +1,22 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PhongKhamThuCung.Data;
 using PhongKhamThuCung.Models.EF;
+using PhongKhamThuCung.Repositories;
+using System.Threading.Tasks;
 
 namespace PhongKhamThuCung.Controllers
 {
     public class BinhLuanController : Controller
     {
-        private ApplicationDbContext db;
-        private UserManager<ApplicationUser> userManager;
-        public BinhLuanController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
+        private readonly IBinhLuanRepository _binhLuanRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public BinhLuanController(IBinhLuanRepository binhLuanRepository, UserManager<ApplicationUser> userManager)
         {
-            this.db = db;
-            this.userManager = userManager;
+            _binhLuanRepository = binhLuanRepository;
+            _userManager = userManager;
         }
+
         public IActionResult Index()
         {
             return View();
@@ -23,108 +25,91 @@ namespace PhongKhamThuCung.Controllers
         [HttpPost]
         public async Task<IActionResult> ThemBinhLuan(string NoiDung, string CamXuc)
         {
-            if(User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
-
-                ApplicationUser x = await userManager.GetUserAsync(User);
-                if (x == null)
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
                 {
                     return RedirectToAction("Login", "Account", new { area = "Identity" });
                 }
-                else
+
+                var danhGia = new DanhGia
                 {
-                    DanhGia dg = new DanhGia(); 
-                    dg.NoiDung = NoiDung;
-                    dg.UserId = x.Id;
-                    dg.CamXuc = CamXuc;
+                    NoiDung = NoiDung,
+                    UserId = user.Id,
+                    CamXuc = CamXuc
+                };
 
-                    db.DanhGias.Add(dg);
-                    await db.SaveChangesAsync();
-
-                    return RedirectToPage("/Account/Manage/Index", new { area = "Identity" });
-                }
-
+                await _binhLuanRepository.AddAsync(danhGia);
+                return RedirectToPage("/Account/Manage/Index", new { area = "Identity" });
             }
-            return RedirectToAction("Login", "Account", new { area = "Identity" });
 
+            return RedirectToAction("Login", "Account", new { area = "Identity" });
         }
 
         public async Task<IActionResult> DanhSachBinhLuan()
         {
-            if (User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated)
             {
-
-                ApplicationUser x = await userManager.GetUserAsync(User);
-                if (x == null)
-                {
-                    return RedirectToAction("Login", "Account", new { area = "Identity" });
-                }
-                else
-                {
-                    List<DanhGia> ds = await db.DanhGias
-                                                            .Include(u => u.ApplicationUser)
-                                                            .Where(i => i.UserId == x.Id)
-                                                            .ToListAsync();
-                    return View(ds);
-                }
-
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
             }
-            return RedirectToAction("Login", "Account", new { area = "Identity" });
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+            }
+
+            var danhSachBinhLuan = await _binhLuanRepository.GetDanhGiaByUserIdAsync(user.Id);
+            return View(danhSachBinhLuan);
         }
 
-        public async Task<IActionResult> ChinhSuaBinhLuan (int id)
+        public async Task<IActionResult> ChinhSuaBinhLuan(int id)
         {
-            if (User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated)
             {
-
-                ApplicationUser x = await userManager.GetUserAsync(User);
-                if (x == null)
-                {
-                    return RedirectToAction("Login", "Account", new { area = "Identity" });
-                }
-                else
-                {
-                    DanhGia ds = await db.DanhGias
-                                                            .Include(u => u.ApplicationUser)
-                                                            .FirstOrDefaultAsync(i => i.UserId == x.Id && i.MaDanhGia == id);
-                    return View(ds);
-                }
-
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
             }
-            return RedirectToAction("Login", "Account", new { area = "Identity" });
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+            }
+
+            var danhGia = await _binhLuanRepository.GetByIdAsync(id);
+            if (danhGia == null || danhGia.UserId != user.Id)
+            {
+                return NotFound();
+            }
+
+            return View(danhGia);
         }
 
         [HttpPost]
         public async Task<IActionResult> ChinhSuaBinhLuan(DanhGia danhGia)
         {
-
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                DanhGia x = await db.DanhGias
-                                            .Include(u => u.ApplicationUser)
-                                            .FirstOrDefaultAsync(i =>  i.MaDanhGia == danhGia.MaDanhGia);
-
-                x.NoiDung = danhGia.NoiDung;
-                x.CamXuc = danhGia.CamXuc;
-
-                db.SaveChanges();
-                return RedirectToAction(nameof(DanhSachBinhLuan));
+                return View(danhGia);
             }
-            return View(danhGia);
-        }
 
-        // Xóa bình luận
-
-        public IActionResult Delete(int id)
-        {
-            var danhGia = db.DanhGias.Find(id);
-            if (danhGia == null)
+            var existingDanhGia = await _binhLuanRepository.GetByIdAsync(danhGia.MaDanhGia);
+            if (existingDanhGia == null)
             {
                 return NotFound();
             }
 
-            db.DanhGias.Remove(danhGia);
-            db.SaveChanges();
+            existingDanhGia.NoiDung = danhGia.NoiDung;
+            existingDanhGia.CamXuc = danhGia.CamXuc;
+
+            await _binhLuanRepository.UpdateAsync(existingDanhGia);
+            return RedirectToAction(nameof(DanhSachBinhLuan));
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _binhLuanRepository.DeleteAsync(id);
             return RedirectToAction(nameof(DanhSachBinhLuan));
         }
     }
