@@ -1,31 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PhongKhamThuCung.Data;
-using PhongKhamThuCung.Models.EF;
+using PhongKhamThuCung.Repositories;
+using System.Threading.Tasks;
 
 namespace PhongKhamThuCung.Controllers
 {
     public class BaiVietController : Controller
     {
-        private ApplicationDbContext db;
-        public BaiVietController(ApplicationDbContext db)
+        private readonly IBaiVietRepository _baiVietRepository;
+
+        public BaiVietController(IBaiVietRepository baiVietRepository)
         {
-            this.db = db;
+            _baiVietRepository = baiVietRepository;
         }
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
-            List<TinTuc> DanhSachTinTuc = db.TinTucs.Include(u => u.LoaiTinTuc).ToList();
-            return View(DanhSachTinTuc);
+            var danhSachTinTuc = await _baiVietRepository.GetAllAsync();
+            return View(danhSachTinTuc);
         }
 
         public async Task<IActionResult> Detail(int id)
         {
-            TinTuc x = await db.TinTucs.Include(u => u.LoaiTinTuc).FirstOrDefaultAsync(i => i.MaTinTuc == id);
-            if (x == null)
+            var tinTuc = await _baiVietRepository.GetByIdAsync(id);
+            if (tinTuc == null)
             {
                 return RedirectToAction("Index", "Home");
             }
-            return View(x);
+            return View(tinTuc);
         }
     }
 }

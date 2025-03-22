@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PhongKhamThuCung.Data;
 using PhongKhamThuCung.Models.EF;
+using PhongKhamThuCung.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,10 +11,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("QuanLyThuCung")));
 
-
-
-
-
+builder.Services.AddScoped<IBacSiRepository, BacSiRepository>();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
  .AddDefaultTokenProviders()

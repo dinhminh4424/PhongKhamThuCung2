@@ -12,8 +12,8 @@ using PhongKhamThuCung.Data;
 namespace PhongKhamThuCung.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250320085822_CapNhatLaiBangLan4")]
-    partial class CapNhatLaiBangLan4
+    [Migration("20250322072551_Intitial")]
+    partial class Intitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -281,29 +281,6 @@ namespace PhongKhamThuCung.Migrations
                     b.ToTable("BacSi");
                 });
 
-            modelBuilder.Entity("PhongKhamThuCung.Models.EF.ChiTietUuDai", b =>
-                {
-                    b.Property<int>("MaChiTietUuDai")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaChiTietUuDai"));
-
-                    b.Property<int?>("MaHoaDon")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MaUuDai")
-                        .HasColumnType("int");
-
-                    b.HasKey("MaChiTietUuDai");
-
-                    b.HasIndex("MaHoaDon");
-
-                    b.HasIndex("MaUuDai");
-
-                    b.ToTable("ChiTietUuDai");
-                });
-
             modelBuilder.Entity("PhongKhamThuCung.Models.EF.ChuyenKhoa", b =>
                 {
                     b.Property<int>("MaChuyenKhoa")
@@ -343,11 +320,14 @@ namespace PhongKhamThuCung.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaDanhGia"));
 
-                    b.Property<int?>("Diem")
-                        .HasColumnType("int");
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("MoTaNgan")
+                    b.Property<string>("CamXuc")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("NgayBinhLuan")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("NoiDung")
                         .HasColumnType("nvarchar(max)");
@@ -386,6 +366,9 @@ namespace PhongKhamThuCung.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("MoTa")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MoTaNgan")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenDichVu")
@@ -430,94 +413,6 @@ namespace PhongKhamThuCung.Migrations
                     b.ToTable("GioiThieu");
                 });
 
-            modelBuilder.Entity("PhongKhamThuCung.Models.EF.HoaDon", b =>
-                {
-                    b.Property<int>("MaHoaDon")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaHoaDon"));
-
-                    b.Property<double?>("DaThanhToan")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("MaLH")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("NgayLap")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("NgayThanhToan")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double?>("ThanhTien")
-                        .HasColumnType("float");
-
-                    b.Property<bool>("TinhTrang")
-                        .HasColumnType("bit");
-
-                    b.Property<double?>("TongTien")
-                        .HasColumnType("float");
-
-                    b.HasKey("MaHoaDon");
-
-                    b.HasIndex("MaLH")
-                        .IsUnique()
-                        .HasFilter("[MaLH] IS NOT NULL");
-
-                    b.ToTable("HoaDon");
-                });
-
-            modelBuilder.Entity("PhongKhamThuCung.Models.EF.KhachHang", b =>
-                {
-                    b.Property<int>("MaKhachHang")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaKhachHang"));
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Alias")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DiaChi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Facebook")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HinhAnh")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MatKhau")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MoTa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SDT")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TaiKhoan")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TenKhachHang")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MaKhachHang");
-
-                    b.ToTable("KhachHang");
-                });
-
             modelBuilder.Entity("PhongKhamThuCung.Models.EF.LichHen", b =>
                 {
                     b.Property<int>("MaLichHen")
@@ -525,6 +420,9 @@ namespace PhongKhamThuCung.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaLichHen"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
                     b.Property<string>("GhiChu")
                         .HasColumnType("nvarchar(max)");
@@ -546,8 +444,9 @@ namespace PhongKhamThuCung.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("TrangThai")
-                        .HasColumnType("bit");
+                    b.Property<string>("TrangThai")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -772,21 +671,6 @@ namespace PhongKhamThuCung.Migrations
                     b.Navigation("ChuyenKhoa");
                 });
 
-            modelBuilder.Entity("PhongKhamThuCung.Models.EF.ChiTietUuDai", b =>
-                {
-                    b.HasOne("PhongKhamThuCung.Models.EF.HoaDon", "HoaDon")
-                        .WithMany()
-                        .HasForeignKey("MaHoaDon");
-
-                    b.HasOne("PhongKhamThuCung.Models.EF.UuDai", "UuDai")
-                        .WithMany()
-                        .HasForeignKey("MaUuDai");
-
-                    b.Navigation("HoaDon");
-
-                    b.Navigation("UuDai");
-                });
-
             modelBuilder.Entity("PhongKhamThuCung.Models.EF.DanhGia", b =>
                 {
                     b.HasOne("PhongKhamThuCung.Models.EF.ApplicationUser", "ApplicationUser")
@@ -803,15 +687,6 @@ namespace PhongKhamThuCung.Migrations
                         .HasForeignKey("MaChuyenKhoa");
 
                     b.Navigation("ChuyenKhoa");
-                });
-
-            modelBuilder.Entity("PhongKhamThuCung.Models.EF.HoaDon", b =>
-                {
-                    b.HasOne("PhongKhamThuCung.Models.EF.LichHen", "LichHen")
-                        .WithOne("HoaDon")
-                        .HasForeignKey("PhongKhamThuCung.Models.EF.HoaDon", "MaLH");
-
-                    b.Navigation("LichHen");
                 });
 
             modelBuilder.Entity("PhongKhamThuCung.Models.EF.LichHen", b =>
@@ -861,11 +736,6 @@ namespace PhongKhamThuCung.Migrations
             modelBuilder.Entity("PhongKhamThuCung.Models.EF.DichVu", b =>
                 {
                     b.Navigation("LichHens");
-                });
-
-            modelBuilder.Entity("PhongKhamThuCung.Models.EF.LichHen", b =>
-                {
-                    b.Navigation("HoaDon");
                 });
 
             modelBuilder.Entity("PhongKhamThuCung.Models.EF.LoaiTinTuc", b =>

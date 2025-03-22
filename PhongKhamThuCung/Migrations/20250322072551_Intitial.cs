@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PhongKhamThuCung.Migrations
 {
     /// <inheritdoc />
-    public partial class ExtendIdentityUser : Migration
+    public partial class Intitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,6 +30,10 @@ namespace PhongKhamThuCung.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HoVaTen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Age = table.Column<int>(type: "int", nullable: true),
+                    Active = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -69,24 +73,6 @@ namespace PhongKhamThuCung.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DichVu",
-                columns: table => new
-                {
-                    MaDichVu = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TenDichVu = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    GiaDichVu = table.Column<double>(type: "float", nullable: true),
-                    HinhAnh = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Alias = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Active = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DichVu", x => x.MaDichVu);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "GioiThieu",
                 columns: table => new
                 {
@@ -102,29 +88,6 @@ namespace PhongKhamThuCung.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GioiThieu", x => x.MaGioiThieu);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "KhachHang",
-                columns: table => new
-                {
-                    MaKhachHang = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TenKhachHang = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TaiKhoan = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MatKhau = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SDT = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Facebook = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HinhAnh = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Alias = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Active = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_KhachHang", x => x.MaKhachHang);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,6 +120,23 @@ namespace PhongKhamThuCung.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_QuangCao", x => x.MaQuangCao);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ThuCung",
+                columns: table => new
+                {
+                    MaThuCung = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TenThuCung = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GiongLoai = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tuoi = table.Column<int>(type: "int", nullable: true),
+                    TinhTrang = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HinhAnh = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ThuCung", x => x.MaThuCung);
                 });
 
             migrationBuilder.CreateTable(
@@ -283,6 +263,28 @@ namespace PhongKhamThuCung.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DanhGia",
+                columns: table => new
+                {
+                    MaDanhGia = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NoiDung = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CamXuc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NgayBinhLuan = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DanhGia", x => x.MaDanhGia);
+                    table.ForeignKey(
+                        name: "FK_DanhGia_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BacSi",
                 columns: table => new
                 {
@@ -310,47 +312,28 @@ namespace PhongKhamThuCung.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DanhGia",
+                name: "DichVu",
                 columns: table => new
                 {
-                    MaDanhGia = table.Column<int>(type: "int", nullable: false)
+                    MaDichVu = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NoiDung = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TenDichVu = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MoTaNgan = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Diem = table.Column<int>(type: "int", nullable: true),
-                    MaKH = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DanhGia", x => x.MaDanhGia);
-                    table.ForeignKey(
-                        name: "FK_DanhGia_KhachHang_MaKH",
-                        column: x => x.MaKH,
-                        principalTable: "KhachHang",
-                        principalColumn: "MaKhachHang");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ThuCung",
-                columns: table => new
-                {
-                    MaThuCung = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TenThuCung = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GiongLoai = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Tuoi = table.Column<int>(type: "int", nullable: true),
-                    TinhTrang = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MoTa = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GiaDichVu = table.Column<double>(type: "float", nullable: true),
                     HinhAnh = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MaKhachHang = table.Column<int>(type: "int", nullable: true)
+                    Alias = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    MaChuyenKhoa = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ThuCung", x => x.MaThuCung);
+                    table.PrimaryKey("PK_DichVu", x => x.MaDichVu);
                     table.ForeignKey(
-                        name: "FK_ThuCung_KhachHang_MaKhachHang",
-                        column: x => x.MaKhachHang,
-                        principalTable: "KhachHang",
-                        principalColumn: "MaKhachHang");
+                        name: "FK_DichVu_ChuyenKhoa_MaChuyenKhoa",
+                        column: x => x.MaChuyenKhoa,
+                        principalTable: "ChuyenKhoa",
+                        principalColumn: "MaChuyenKhoa");
                 });
 
             migrationBuilder.CreateTable(
@@ -385,20 +368,23 @@ namespace PhongKhamThuCung.Migrations
                     MaLichHen = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NgayHen = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TrangThai = table.Column<bool>(type: "bit", nullable: true),
+                    TrangThai = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    SoDienThoai = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HoTen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MaThuCung = table.Column<int>(type: "int", nullable: true),
                     MaDichVu = table.Column<int>(type: "int", nullable: true),
-                    MaBacSi = table.Column<int>(type: "int", nullable: true),
-                    BacSiMaBacSi = table.Column<int>(type: "int", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LichHen", x => x.MaLichHen);
                     table.ForeignKey(
-                        name: "FK_LichHen_BacSi_BacSiMaBacSi",
-                        column: x => x.BacSiMaBacSi,
-                        principalTable: "BacSi",
-                        principalColumn: "MaBacSi");
+                        name: "FK_LichHen_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_LichHen_DichVu_MaDichVu",
                         column: x => x.MaDichVu,
@@ -409,54 +395,6 @@ namespace PhongKhamThuCung.Migrations
                         column: x => x.MaThuCung,
                         principalTable: "ThuCung",
                         principalColumn: "MaThuCung");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "HoaDon",
-                columns: table => new
-                {
-                    MaHoaDon = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NgayLap = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    NgayThanhToan = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TinhTrang = table.Column<bool>(type: "bit", nullable: false),
-                    ThanhTien = table.Column<double>(type: "float", nullable: true),
-                    TongTien = table.Column<double>(type: "float", nullable: true),
-                    DaThanhToan = table.Column<double>(type: "float", nullable: true),
-                    MaLH = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HoaDon", x => x.MaHoaDon);
-                    table.ForeignKey(
-                        name: "FK_HoaDon_LichHen_MaLH",
-                        column: x => x.MaLH,
-                        principalTable: "LichHen",
-                        principalColumn: "MaLichHen");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ChiTietUuDai",
-                columns: table => new
-                {
-                    MaChiTietUuDai = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MaUuDai = table.Column<int>(type: "int", nullable: true),
-                    MaHoaDon = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ChiTietUuDai", x => x.MaChiTietUuDai);
-                    table.ForeignKey(
-                        name: "FK_ChiTietUuDai_HoaDon_MaHoaDon",
-                        column: x => x.MaHoaDon,
-                        principalTable: "HoaDon",
-                        principalColumn: "MaHoaDon");
-                    table.ForeignKey(
-                        name: "FK_ChiTietUuDai_UuDai_MaUuDai",
-                        column: x => x.MaUuDai,
-                        principalTable: "UuDai",
-                        principalColumn: "MaUuDai");
                 });
 
             migrationBuilder.CreateIndex(
@@ -504,31 +442,14 @@ namespace PhongKhamThuCung.Migrations
                 column: "MaChuyenKhoa");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChiTietUuDai_MaHoaDon",
-                table: "ChiTietUuDai",
-                column: "MaHoaDon");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ChiTietUuDai_MaUuDai",
-                table: "ChiTietUuDai",
-                column: "MaUuDai");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DanhGia_MaKH",
+                name: "IX_DanhGia_UserId",
                 table: "DanhGia",
-                column: "MaKH");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HoaDon_MaLH",
-                table: "HoaDon",
-                column: "MaLH",
-                unique: true,
-                filter: "[MaLH] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LichHen_BacSiMaBacSi",
-                table: "LichHen",
-                column: "BacSiMaBacSi");
+                name: "IX_DichVu_MaChuyenKhoa",
+                table: "DichVu",
+                column: "MaChuyenKhoa");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LichHen_MaDichVu",
@@ -541,9 +462,9 @@ namespace PhongKhamThuCung.Migrations
                 column: "MaThuCung");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ThuCung_MaKhachHang",
-                table: "ThuCung",
-                column: "MaKhachHang");
+                name: "IX_LichHen_UserId",
+                table: "LichHen",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TinTuc_MaLoaiTin",
@@ -570,7 +491,7 @@ namespace PhongKhamThuCung.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ChiTietUuDai");
+                name: "BacSi");
 
             migrationBuilder.DropTable(
                 name: "DanhGia");
@@ -579,10 +500,16 @@ namespace PhongKhamThuCung.Migrations
                 name: "GioiThieu");
 
             migrationBuilder.DropTable(
+                name: "LichHen");
+
+            migrationBuilder.DropTable(
                 name: "QuangCao");
 
             migrationBuilder.DropTable(
                 name: "TinTuc");
+
+            migrationBuilder.DropTable(
+                name: "UuDai");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -591,31 +518,16 @@ namespace PhongKhamThuCung.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "HoaDon");
-
-            migrationBuilder.DropTable(
-                name: "UuDai");
-
-            migrationBuilder.DropTable(
-                name: "LoaiTinTuc");
-
-            migrationBuilder.DropTable(
-                name: "LichHen");
-
-            migrationBuilder.DropTable(
-                name: "BacSi");
-
-            migrationBuilder.DropTable(
                 name: "DichVu");
 
             migrationBuilder.DropTable(
                 name: "ThuCung");
 
             migrationBuilder.DropTable(
-                name: "ChuyenKhoa");
+                name: "LoaiTinTuc");
 
             migrationBuilder.DropTable(
-                name: "KhachHang");
+                name: "ChuyenKhoa");
         }
     }
 }
